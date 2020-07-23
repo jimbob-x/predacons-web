@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <script src="https://kit.fontawesome.com/b00fc6f71d.js" crossorigin="anonymous"></script>
+        <meta charset="utf-8">
+        <title>Sign up</title>
+        <link rel="stylesheet" href="assets/styles/new-acc.css">
+        <link href='https://fonts.googleapis.com/css?family=Mandali' rel='stylesheet'>        
+    </head>
+    <body>
+        <div id="login">            
+            <form name="acc-form" action="new_acc.php" method="post">
+                <h1>SIGN UP</h1>
+                <div class="container" id="sign-up">
+                  <input type="text" class="text-box" placeholder="Username" name="uname" required>
+                  <input id="email" type="email" class="text-box" placeholder="Email" name="email" required>
+                  <input id="password" type="password" class="text-box" placeholder="Password" name="psw" required>                  
+                  <!--span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span-->
+                  <i class="far fa-eye" id="togglePassword"></i>
+                  <button id="submit-button" type="submit">Submit</button>                  
+            </form>           
+        </div>
+    </body>
+    <script src="assets/js/signup_validate.js"></script>
+</html>
