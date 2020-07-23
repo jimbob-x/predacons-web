@@ -71,3 +71,13 @@ body.loggedin {
 	padding: 5px;
 	margin: 0 0 10px 0;
 }
+
+#imgbox {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+
+#imgbox img {
+	max-width: 45%;
+}

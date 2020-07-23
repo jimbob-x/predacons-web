@@ -27,6 +27,11 @@ if (!isset($_SESSION['loggedin'])) {
 		<div class="content">
 			<h2>Home Page</h2>
 			<p>Welcome back, <?=$_SESSION['name']?>!</p>
+			<p>More content coming soon</p>
+                        <div id="imgbox">
+                            <img src="assets/media/penfold0.png">
+                            <img src="assets/media/penfold1.png">
+                        </div>
 		</div>
 	</body>
 </html>
