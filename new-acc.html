@@ -9,13 +9,12 @@
     </head>
     <body>
         <div id="login">            
-            <form name="acc-form" action="new_acc.php" method="post">
+	    <form name="acc-form" action="newUser.php" method="post">
                 <h1>SIGN UP</h1>
                 <div class="container" id="sign-up">
                   <input type="text" class="text-box" placeholder="Username" name="uname" required>
                   <input id="email" type="email" class="text-box" placeholder="Email" name="email" required>
                   <input id="password" type="password" class="text-box" placeholder="Password" name="psw" required>                  
-                  <!--span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span-->
                   <i class="far fa-eye" id="togglePassword"></i>
                   <button id="submit-button" type="submit">Submit</button>                  
             </form>           

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Login</title>
+        <link rel="stylesheet" href="assets/styles/login.css">
+        <link href='https://fonts.googleapis.com/css?family=Mandali' rel='stylesheet'>
+    </head>
+    <body>
+        <div id="login">
+            <form action="authenticate.php" method="post">
+                <div class="imgcontainer">
+                    <img src="assets/media/ani-cat.gif" id="main-logo">
+                </div>
+                <div class="container" id="login-box">
+                  <input type="text" class="text-box" placeholder="Username" name="uname" required onload="validateEMail()">
+                  <input type="password" class="text-box" placeholder="Password" name="psw" required>
+                  <i class="far fa-eye" id="togglePassword"></i>
+                  <button id="submit-button" type="submit" name="login">Login</button>
+            </form>
+            <div>
+                <span class="psw-acc"><a href="new-acc.html">Create new account</a></span>
+                <span class="psw-acc"><a href="reset.html">Reset password</a></span>
+            </div>
+
+        </div>
+    </body>
+</html>
