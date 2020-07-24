@@ -22,8 +22,8 @@ $dbname = explode("=", $serverAttr[3])[1];
 fclose($myfile);
 
 if ( !isset($_POST['uname'], $_POST['psw']) ) {
-        // Could not get the data that should have been sent.
-        exit('Please fill both the username and password fields!');
+    // Could not get the data that should have been sent.
+    exit('Please fill both the username and password fields!');
 }
 
 
@@ -45,14 +45,14 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
   
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
+// output data of each row
+while($row = $result->fetch_assoc()) {
     $existingUser = $row['username'];
     echo "<script>
     alert('User already exists, try a different username');
     window.location.href='new-acc.html';
     </script>";    
-  }
+}
 } else {
     $insertUser = "INSERT INTO users (username, email, password) VALUES ('$uname', '$email',  '$password')";
     mysqli_query($conn, $insertUser) or die (mysql_error());

@@ -81,3 +81,10 @@ body.loggedin {
 #imgbox img {
 	max-width: 45%;
 }
+
+.close {
+  cursor: pointer;
+  padding: 12px 16px;
+}
+
+.close:hover {background: #bbb;}
