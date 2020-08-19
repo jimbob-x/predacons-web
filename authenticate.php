@@ -48,8 +48,8 @@ if ($stmt->num_rows > 0) {
 		// Create sessions so we know the user is logged in, they basically act like cookies but remember the data on the server.
 		session_regenerate_id();
 		$_SESSION['loggedin'] = TRUE;
-		$_SESSION['name'] = $_POST['uname'];		
-		$_SESSION['id'] = $id;
+		$_SESSION['name'] = $_POST['uname'];
+		//$_SESSION['id'] = $id;
 		//echo 'Welcome ' . $_SESSION['name'] . '!';
 		header('Location: home.php');
 	} else {

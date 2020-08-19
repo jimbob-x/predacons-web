@@ -71,13 +71,32 @@ $key = md5(2418*2  + $email);
 $addKey = substr(md5(uniqid(rand(), 1)), 3, 10);
 $key = $key . $addKey;
 
-$insertKey = "INSERT INTO passwordReset (email, username, tempKey) VALUES ('$email', '$username', '$key')";
+$insertKey = "INSERT INTO passwordReset (email, username, tempKey, expDate) VALUES ('$email', '$username', '$key', '$expDate')";
 mysqli_query($conn, $insertKey);
 
 $conn->close();
 
 
-echo $username . ' - ' . $email;
+// The message
+$message = "Please click on the following link to reset your password.\r\n";
+$message .= 'https://d-predictions.co.uk/predacons-web/resetPassword.php?key='.$key.'&email='.$email.'&action=reset';
 
+// In case any of our lines are larger than 70 characters, we should use wordwrap()
+$message = wordwrap($message, 70, "\r\n");
+
+$headers = array(
+	'From' => 'Prediction Master',
+	'reply-To' => 'd.predictions.master@gmail.com'
+);
+
+// Send
+mail('d-predictions@protonmail.com', 'My Subject', $message, $headers);
+//mail($email, 'My Subject', $message);
+
+
+echo "<script>
+alert('Email for password reset sent to your account, please activate in the next 60 mins.');
+window.location.href='login.html';
+</script>";
 
 ?>
