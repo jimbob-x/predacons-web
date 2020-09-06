@@ -17,7 +17,8 @@ if (!isset($_SESSION['loggedin'])) {
         <title>D</title>
 	<link rel="stylesheet" href="assets/styles/d.css">
         <script src="assets/js/d.js"></script>
-        <link href='https://fonts.googleapis.com/css?family=Mandali' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css?family=Mandali' rel='stylesheet'>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     </head>
     <body>
     <div class="game">
@@ -31,7 +32,7 @@ if (!isset($_SESSION['loggedin'])) {
                 </div>    
                 <div class="status" id="status"></div>    
                 <div id="deck" class="deck">
-                    <div id="deckcount">52</div>
+                    <div id="deckcount">70</div>
                 </div>    
                 <div id="players" class="players"></div>    
                 <div class="clear"></div>

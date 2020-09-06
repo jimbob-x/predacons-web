@@ -4,8 +4,6 @@ function phpAlert($msg) {
     echo '<script type="text/javascript">alert("' . $msg . '")</script>';
 }
 
-
-
 //header('Location: home.html');
 
 //get sql details
@@ -30,6 +28,7 @@ if ( !isset($_POST['uname'], $_POST['psw']) ) {
 $uname = $_POST["uname"];
 $email = $_POST["email"];
 $password = md5($_POST["psw"]);
+$today = date("Y-m-d H:i:s");
 
 // Create connection
 $conn = new mysqli($servername, $username, $dbPassword, $dbname);
@@ -54,8 +53,50 @@ while($row = $result->fetch_assoc()) {
     </script>";    
 }
 } else {
-    $insertUser = "INSERT INTO users (username, email, password) VALUES ('$uname', '$email',  '$password')";
+    $insertUser = "INSERT INTO users (username, email, password, joined) VALUES ('$uname', '$email', '$password', '$today')";
     mysqli_query($conn, $insertUser) or die (mysql_error());
+
+    //$addPredictions = "INSERT INTO predictions"
+}
+
+$conn->close();
+
+//add new user and fixtures to predictions table
+
+// Create connection
+$conn = new mysqli($servername, $username, $dbPassword, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+$fixtureQuery = "SELECT id FROM fixtures";
+$fixtureResult = $conn->query($fixtureQuery);
+
+$sqlNewFixtures = '';
+foreach($fixtureResult as $fix) {   
+    $fixInput = $fix['id'];
+    $sqlNewFixtures .= "INSERT INTO predictions (username, match_id) VALUES ('$uname', '$fixInput');";
+}
+
+$conn->close();
+//add new user and fixtures to predictions table
+
+// Create connection
+$conn = new mysqli($servername, $username, $dbPassword, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+if ($conn->multi_query($sqlNewFixtures) === TRUE) {
+  echo "<script>alert('New records created successfully')</script>";
+} else {
+  echo "<script>alert('Error creating fixtures in database, contact site admin')</script>";
 }
 
 $conn->close();

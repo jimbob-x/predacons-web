@@ -19,7 +19,7 @@
                         weight = 11;
 		    if (values[i] == "D")
                         weight = 99;
-                    var card = { Value: values[i], Suit: suits[x], Weight: weight };
+                    var card = {Value: values[i], Suit: suits[x], Weight: weight};
                     deck.push(card);
                 }
             }
@@ -118,14 +118,16 @@
             var el = document.createElement('div');
             var icon = '';
             if (card.Suit == 'Hearts')
-            icon='&hearts;';
+                icon = '&hearts;';
             else if (card.Suit == 'Spades')
-            icon = '&spades;';
+                icon = '&spades;';
             else if (card.Suit == 'Diamonds')
-            icon = '&diams;';
-            else
-            icon = '&clubs;';
-            
+                icon = '&diams;';
+            else if (card.Suit == 'Clubs')
+                icon = '&clubs;';
+            else if (card.Suit == 'D'):
+		icon = '&#68;';
+             
             el.className = 'card';
             el.innerHTML = card.Value + '<br/>' + icon;
             return el;
@@ -145,6 +147,7 @@
 
         function updatePoints()
         {
+	    console.log('55');
             for (var i = 0 ; i < players.length; i++)
             {
                 getPoints(i);

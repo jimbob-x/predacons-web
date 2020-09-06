@@ -65,7 +65,7 @@ $conn = mysqli_connect($servername, $dbUsername, $dbPassword, $dbname);
 $expFormat = mktime(
     date("H")+1, date("i"), date("s"), date("m") ,date("d"), date("Y")
 );
-$email = 'penfold@penfold.com';
+//$email = 'penfold@penfold.com';
 $expDate = date("Y-m-d H:i:s", $expFormat);
 $key = md5(2418*2  + $email);
 $addKey = substr(md5(uniqid(rand(), 1)), 3, 10);
