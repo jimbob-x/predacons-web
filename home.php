@@ -15,6 +15,27 @@ else {
 	//TO DO
 	//write session id to userdb
 }
+
+//get sql details
+$myfile = fopen(".keys/sql_keys", "r") or die("Unable to open file!");
+$serverAttr = fread($myfile,filesize(".keys/sql_keys"));
+
+$serverAttr = explode("\n", $serverAttr);
+
+$servername = explode("=", $serverAttr[0])[1];
+$dbUsername =  explode("=", $serverAttr[1])[1];
+$dbPassword =  explode("=", $serverAttr[2])[1];
+$dbname =  explode("=", $serverAttr[3])[1];
+
+fclose($myfile);
+
+$con = mysqli_connect($servername, $dbUsername, $dbPassword, $dbname);
+if ( mysqli_connect_errno() ) {
+        // If there is an error with the connection, stop the script and display the error.
+        exit('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -31,9 +52,9 @@ else {
 		<a href="home.php"><h1>Predacons</h1></a>
 		<!--a href="d.php?sessId=<?php echo $session ?>">D</a-->
                 <!--a href="d.php">D</a-->
-                <a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
+		<!--a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a-->
+		<a href="fixtures.php">Fixtures</a>
 		<a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
-                <a href="fixtures.php">Fixtures</a>
 	    </div>
 	</nav>
 	<div class="content">
@@ -42,7 +63,25 @@ else {
             <div id="imgbox">
                 <img src="assets/media/penfold0.png">
                 <img src="assets/media/penfold1.png">
-            </div>
+	    </div>
+	    <div id="tablebox">
+            <table border='1' style='table-layout:auto'>
+		<tr>
+                    <th>USER</th>
+		    <th>POINTS</th>
+		</tr>
+		<?php
+                    $query = "SELECT username, SUM(points) FROM predictions WHERE points IS NOT NULL GROUP BY username ORDER BY SUM(points) DESC;";
+                   if ($result = $con->query($query)) {
+                       foreach ($result as $res){
+                           $username = $res['username'];
+                           $pts = $res['SUM(points)'];
+                           echo "<tr><td>$username</td><td>$pts</td></tr>";
+                       }
+                   }
+                ?>
+	    </div>
 	</div>
+        
     </body>
 </html>

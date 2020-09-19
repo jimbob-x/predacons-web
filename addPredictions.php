@@ -48,10 +48,13 @@ foreach ($_POST as $key => $value) {
 $sqlAdd = '';
 
 foreach ($predArray as $predKey => $predVal) {
-	$home = intval($predVal['home']);
-	$away = intval($predVal['away']);	
-	$sqlAdd .= "UPDATE predictions SET predicted_home=$home, predicted_away=$away WHERE username='$name' AND match_id='$predKey';";
+	if ($predVal['home'] != "" and $predVal['away'] != "") {
+        	$home = intval($predVal['home']);
+	        $away = intval($predVal['away']);
+   		$sqlAdd .= "UPDATE predictions SET predicted_home=$home, predicted_away=$away WHERE username='$name' AND match_id='$predKey';";
+	}
 }
+
 
 
 if ($conn->multi_query($sqlAdd) === TRUE) {

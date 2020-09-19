@@ -1,7 +1,20 @@
 <?php
 session_start();
 
-$name = $_SESSION['name'];
+
+if (!isset($_SESSION['loggedin'])) {
+        echo "<script>
+        alert('You must be logged in to access this page..');
+        window.location.href='login.html';
+        </script>";
+}
+else {
+        $name = $_SESSION['name'];
+
+        //TO DO
+        //write session id to userdb
+}
+
 
 
 //get sql details
@@ -34,9 +47,9 @@ echo '<html>
                 <a href="home.php"><h1>Predacons</h1></a>
                 <!--a href="d.php?sessId=<?php echo $session ?>">D</a-->
                 <!--a href="d.php">D</a-->
-                <a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
-                <a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
+		<!--a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a-->
                 <a href="fixtures.php">Fixtures</a>
+                <a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
             </div>
         </nav>';
 
@@ -69,68 +82,86 @@ if ( mysqli_connect_errno() ) {
 }
 
 echo "<form action='addPredictions.php' method='post' id='predictions'>";
-echo "<table border='1' style='table-layout: auto;'><tr><th>MATCH START</th><th>HOME</th><th>AWAY</th><th>HOME GOALS</th><th>AWAY GOALS</th><th>HOME<br>PREDICTED</th><th>AWAY<br> PREDICTED</th></tr>";
+echo "<table border='1' style='table-layout: auto;'><tr><th>MATCH START</th><th>HOME</th><th>AWAY</th><th>HOME GOALS</th><th>AWAY GOALS</th><th>HOME<br>PREDICTED</th><th>AWAY<br>PREDICTED</th></tr>";
 
 $date = date('Y-m-d H:i:s');
 $date = date('Y-m-d H:i:s', strtotime('+1 hour', strtotime($date)));
 
-$query = "SELECT * FROM fixtures JOIN predictions ON fixtures.id = predictions.match_id AND fixtures.matchday = $currentMatchDay AND predictions.username = '$name'";
+//get date 2 weeks in the future
+$two_weeks = date('Y-m-d H:i:s', mktime(23, 59, 59, date('m'), date('d') + 14, date('Y')));
+
+$query = "SELECT * FROM fixtures JOIN predictions ON fixtures.id = predictions.match_id AND fixtures.date < '$two_weeks' AND fixtures.date > '$date' AND predictions.username = '$name' ORDER BY fixtures.date";
 if ($result = $con->query($query)) {
 	//echo var_dump($res);
 	foreach ($result as $res){
+            //$predicted = 0;
+            //$colour = 'white';
+	    $homeColour = '#d61a1a';
+	    $awayColour = '#d61a1a';		
 	    $homeGoalsId = $res['id'] . '_home';
 	    $AwayGoalsId = $res['id'] . '_away';
 	    if ($res['home_goals'] === NULL) {
-		    $homeGoals = 0;
+		    $homeGoals = NULL;		    
 	    } 
 	    else {
 		    $homeGoals = $res['home_goals'];
 	    }
             if ($res['away_goals'] === NULL) {
-                    $awayGoals = 0;
+                    $awayGoals = NULL;
 	    }
 	    else {
 		    $awayGoals = $res['away_goals'];
 	    }
             
 	    if ($res['predicted_home'] === NULL) {
-                    $predictedHome = 0;
+		    $predictedHome = NULL;
 	    }
 	    else {
 		    $predictedHome = $res['predicted_home'];
+		    $homeColour = '#1da51d';
 	    }
             if ($res['predicted_away'] === NULL) {
-                    $predictedAway = 0;
+		    $predictedAway = NULL;
 	    }
 	    else {
 		    $predictedAway = $res['predicted_away'];
+		    $awayColour = '#1da51d';
 	    }
 
+	    /*
+	    if ($res['predicted_home'] === NULL and $res['predicted_away'] === NULL) {
+		    $predicted = 0;
+		    $colour = '#d61a1a';
+	    }
+	    else {
+		    $predicted = 1;
+		    $colour = '#1da51d';
+	    }
+	     */	    
             //echo(var_dump($res));
             echo "<tr>
-	    <td style='display:none;'>" . $res['id']  . "</td>" . 
+	    <td id='matchId' style='display:none;'>" . $res['id']  . "</td>" . 
+            //"<td id='predicted' style='display:none;'>" . $predicted  . "</td>" .
             "<td>" . $res['date'] . "</td>" . 
             "<td>" . $res['home_team'] . "</td>" .
             "<td>" . $res['away_team'] . "</td>" .
             "<td>" . $homeGoals . "</td>" .
             "<td>" . $awayGoals . "</td>";
-	    if ($date > $res['date']){
-		    echo "<td style='text-wrap:normal;word-wrap:break-word'><input style='width: 40px;' value='$predictedHome' type='number' min='0' id='$homeGoalsId' name='$homeGoalsId' disabled></td>" .
-	            "<td style='text-wrap:normal;word-wrap:break-word'><input style='width: 40px;' value='$predictedAway' type='number' min='0' id='$AwayGoalsId' name='$AwayGoalsId' disabled></td></tr>";
+	    if ($date > $res['date']) {
+		    echo "<td style='text-wrap:normal;word-wrap:break-word'><input style='width:40px;background-color:$homeColour;' value='$predictedHome' type='number' min='0' id='$homeGoalsId' name='$homeGoalsId' disabled></td>" .
+	            "<td style='text-wrap:normal;word-wrap:break-word'><input style='width:40px;background-color:$awayColour;' value='$predictedAway' type='number' min='0' id='$AwayGoalsId' name='$AwayGoalsId' disabled></td></tr>";
 	    }
 	    else {
-		    echo "<td style='text-wrap:normal;word-wrap:break-word'><input style='width: 40px;' value='$predictedHome' type='number' min='0' id='$homeGoalsId' name='$homeGoalsId'></td>" .
-	            "<td style='text-wrap:normal;word-wrap:break-word'><input style='width: 40px;' value='$predictedAway' type='number' min='0' id='$AwayGoalsId' name='$AwayGoalsId'></td></tr>";
+		    echo "<td style='text-wrap:normal;word-wrap:break-word'><input style='width:40px;background-color:$homeColour;' value='$predictedHome' type='number' min='0' id='$homeGoalsId' name='$homeGoalsId'></td>" .
+	            "<td style='text-wrap:normal;word-wrap:break-word'><input style='width:40px;background-color:$awayColour;' value='$predictedAway' type='number' min='0' id='$AwayGoalsId' name='$AwayGoalsId'></td></tr>";
 	    }
 	}
 }
 
 echo "</table></form><br>";
 echo "<div><button type='submit' form='predictions' value='Submit'>Submit</button></div><br>";
-echo "<div><button type='button'>Previous</button><button type='button'>Next</button></div>";
-
+echo "<div><button type='button' disabled>Previous</button><button type='button' disabled>Next</button></div>";
 echo "</body></html>";
-
 
 ?>
 
